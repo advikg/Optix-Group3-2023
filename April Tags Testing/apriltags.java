@@ -21,6 +21,6 @@ public class apriltags {
     double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose); //get distance to target
     Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose); //get yaw difference between target and robot pose
     AprilTagFieldLayout aprilTagFieldLayout = new ApriltagFieldLayout(AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile));//load map field
-
+            }
 }
 }
