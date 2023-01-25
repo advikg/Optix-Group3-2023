@@ -21,16 +21,34 @@ public static class Photongetters {
         x("tx"),
         y("ty"),
         Area("ta");
-        public final String read;
+        
+        
+        public final String str;
 
-        Dataddy(String read) {
-            this.read = read;
-        }
+        Dataddy(String str) {
+            this.str = str;
+        }    
     }
+    
 
     
     private double getDouble(Data val) { // Data val just represents the values in the networking table API (tx, ty, etc)
         return table.getEntry(val).getDouble(0.0); // Get the value based off the enum DATA (0.0 is how you read it in networking tables)
+    }
+
+    public static double getX() {
+        tx = getDouble(Dataddy.x);
+        return tx;
+    }
+
+    public static double getY() {
+        ty = getDouble(Dataddy.y);
+        return ty;
+    }
+     
+    public static double getArea() {
+        Area = getDouble(Dataddy.Area);
+        return area;
     }
     
     public static void main(String[] args) {
@@ -40,10 +58,9 @@ public static class Photongetters {
         if (result.hasTargets()) {
             List<PhotonTrackedTarget> targets = result.getTargets(); //if else statement for code above
         }
-        double target_x = target.getYaw(); // Get the yaw position of target
-        double target_y = target.getPitch(); //Get pitch of target
-        double area = target.getArea(); //Get area of target
-    }
-    
+        target_x = getX();
+        target_y = getY();
+        target_area = getArea();
+        }
     }  
 }
