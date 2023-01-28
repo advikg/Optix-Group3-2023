@@ -12,6 +12,6 @@ public class Limelight {
         this.tx = tx; // Horizontal offset from crosshair to the target
         this.ta = ta; // Target area
 
-    } 
+    }
 }
 
