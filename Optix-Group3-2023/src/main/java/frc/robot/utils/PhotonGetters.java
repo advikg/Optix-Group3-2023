@@ -23,7 +23,7 @@ public class PhotonGetters {
     
 
     private static double getDouble(Data val) { // Data val just represents the values in the networking table API (tx, ty, etc)
-        return table.getEntry(val).getDouble(0.0); // Get the value based off the enum DATA (0.0 is how you read it in networking tables)
+        return table.getEntry(val.str).getDouble(0.0); // Get the value based off the enum DATA (0.0 is how you read it in networking tables)
     }
 
     private static double getX(double tx) {
@@ -37,7 +37,7 @@ public class PhotonGetters {
     }
      
     private static double getArea(double area) {
-        area = getDouble(Data.Area);
+        area = getDouble(Data.area);
         return area;
     }
 }
