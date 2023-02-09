@@ -16,4 +16,8 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class VisionConstants {
+    public static final int apriltag_pipeline_index = 0;
+    public static final int reflective_tape_pipeline_index = 1;
+  }
 }
