@@ -14,27 +14,39 @@ import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+
+import frc.robot.Constants.*;
+
 /**
  * @author Advik Garg
  * @author Akhil Singamneni
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
 
 
 public class AprilTagGetters {
-    public static void estimatePose(PhotonCamera camera, Transform3d robotToCam, ArrayList<Pair<PhotonCamera, Transform3d>> camList, AprilTagFieldLayout aprilTagFieldLayout) {
+    public void estimatePose(PhotonCamera camera, Transform3d robotToCam, ArrayList<Pair<PhotonCamera, Transform3d>> camList, AprilTagFieldLayout aprilTagFieldLayout) {
+        camera.setPipelineIndex(VisionConstants.apriltag_pipeline_index);
         camList.add(new Pair<PhotonCamera, Transform3d>(camera, robotToCam));
         PhotonPoseEstimator robotPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
     }
     public static double[] getAprilTagX(PhotonCamera camera) {
+        camera.setPipelineIndex(VisionConstants.apriltag_pipeline_index);
         double target_x = 0.0;
         double target_fiducial_id = 0;
         double[] x_and_id = {target_fiducial_id, target_x};
         PhotonPipelineResult result = camera.getLatestResult(); //run this code in perodic (every 20 ms)
         if (result.hasTargets()) {
-            PhotonTrackedTarget target = result.getBestTarget();; //if else statement for code above
+            PhotonTrackedTarget target = result.getBestTarget();; //if else statement for 22code above
             target_x = target.getYaw();
             target_fiducial_id = target.getFiducialId();
             x_and_id[0] = target_fiducial_id;
+            
             x_and_id[1] = target_x;
         }
         return x_and_id;

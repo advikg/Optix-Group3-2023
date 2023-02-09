@@ -3,11 +3,13 @@ package frc.robot.utils;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Constants.VisionConstants;
+
 /**
  * @author Advik Garg
  * @author William Cheng
  */
-public class LimelightPhotonGetters { 
+public class LimelightPhotonGetters {
     static NetworkTable table = NetworkTableInstance.getDefault().getTable("photonvision"); // New network table instance, and reading in the data table from limelight.
     
     public enum Data{
