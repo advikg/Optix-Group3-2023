@@ -1,7 +1,9 @@
 package frc.robot.utils;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -11,10 +13,13 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import frc.robot.Constants.*;
 
 /**
@@ -30,11 +35,29 @@ import frc.robot.Constants.*;
 
 
 public class AprilTagGetters {
-    public void estimatePose(PhotonCamera camera, Transform3d robotToCam, ArrayList<Pair<PhotonCamera, Transform3d>> camList, AprilTagFieldLayout aprilTagFieldLayout) {
-        camera.setPipelineIndex(VisionConstants.apriltag_pipeline_index);
-        camList.add(new Pair<PhotonCamera, Transform3d>(camera, robotToCam));
-        PhotonPoseEstimator robotPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
+    private static PhotonPoseEstimator robotPoseEstimator;
+    private static SwerveDrivePoseEstimator swerveDrivePoseEstimator;
+
+    public static SwerveDrivePoseEstimator getSwerveDrivePoseEstimator(){
+        return swerveDrivePoseEstimator;
     }
+
+    public static void updateSwerveDrivePoseEstimator(Rotation2d angle,SwerveModulePosition[] positions ){
+        swerveDrivePoseEstimator.update(angle, positions);
+    }
+
+    public static void setPoseEstimator(PhotonCamera camera, Transform3d robotToCam,  AprilTagFieldLayout aprilTagFieldLayout){
+        robotPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, robotToCam);
+        swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(null, null, null, null);
+
+    }       
+
+    public static void updatePoseWithAprilTag(PhotonCamera camera) {
+        camera.setPipelineIndex(VisionConstants.apriltag_pipeline_index);
+        EstimatedRobotPose estimatedPose = robotPoseEstimator.update().get();
+        swerveDrivePoseEstimator.addVisionMeasurement(estimatedPose.estimatedPose.toPose2d(), estimatedPose.timestampSeconds);
+    }
+
     public static double[] getAprilTagX(PhotonCamera camera) {
         camera.setPipelineIndex(VisionConstants.apriltag_pipeline_index);
         double target_x = 0.0;

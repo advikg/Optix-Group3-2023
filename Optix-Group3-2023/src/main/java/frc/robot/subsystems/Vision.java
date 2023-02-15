@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.utils.AprilTagGetters;
 import frc.robot.utils.LimelightPhotonGetters;
 
@@ -39,9 +40,11 @@ public class Vision extends SubsystemBase {
   public static PhotonCamera camera = new PhotonCamera ("OV5647"); //network table that photonvision sends info over
   // CHANGE THE BELOW COMMAND BASED ON WHERE THEY DECIDE 
   public static Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Translation is for how much forward, left, and up from center the camera is
-  public static ArrayList<Pair<PhotonCamera, Transform3d>> camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
   /** Creates a new Vision. */
-  public Vision() {}
+  public Vision() {
+    AprilTagGetters.setPoseEstimator(camera, robotToCam, aprilTagFieldLayout);
+  }
+
 
   /**
    * Example command factory method.
